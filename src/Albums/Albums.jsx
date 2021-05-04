@@ -8,7 +8,7 @@ const useStyles = makeStyles({
 
 const Albums = () => {
   const { fullHeight } = useStyles();
-  const { response } = useGetAlbums();
+  const { response, isLoading } = useGetAlbums();
 
   const columns = [
     { field: "albumTitle", headerName: "Title", width: 300 },
@@ -26,6 +26,7 @@ const Albums = () => {
   return (
     <div className={fullHeight}>
       <DataGrid
+        loading={isLoading}
         rows={rows}
         pageSize={rows.length}
         rowsPerPageOptions={[rows.length]}
