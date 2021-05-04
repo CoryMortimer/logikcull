@@ -1,23 +1,38 @@
 import { useGetAlbums } from "./resources/album";
-import Album from "./Album";
-import Grid from "ui/Grid";
+import { DataGrid } from "ui/DataGrid";
+import { makeStyles } from "ui/styles";
+
+const useStyles = makeStyles({
+  fullHeight: { height: "100vh" },
+});
 
 const Albums = () => {
+  const { fullHeight } = useStyles();
   const { response } = useGetAlbums();
 
+  const columns = [
+    { field: "albumTitle", headerName: "Title", width: 300 },
+    { field: "artistName", headerName: "Artist Name", width: 300 },
+    { field: "year", headerName: "Year", width: 300 },
+    { field: "condition", headerName: "Condition", width: 300 },
+  ];
+
+  const rows = response.results.map(({ artist: { name }, ...rest }, i) => ({
+    artistName: name,
+    id: i,
+    ...rest,
+  }));
+
   return (
-    <Grid container spacing={2}>
-      {response.results.map(({ albumTitle, artist, condition, year }) => (
-        <Grid item xs={12} key={`${albumTitle}${artist.name}${year}`}>
-          <Album
-            albumTitle={albumTitle}
-            artist={artist}
-            condition={condition}
-            year={year}
-          />
-        </Grid>
-      ))}
-    </Grid>
+    <div className={fullHeight}>
+      <DataGrid
+        rows={rows}
+        pageSize={rows.length}
+        rowsPerPageOptions={[rows.length]}
+        columns={columns}
+        disableSelectionOnClick
+      />
+    </div>
   );
 };
 
