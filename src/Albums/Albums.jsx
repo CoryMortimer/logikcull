@@ -14,7 +14,6 @@ const Albums = () => {
   const [pageUrl, setPageUrl] = useState(firstPageOfAlbums);
   const { fullHeight } = useStyles();
   const { response, isLoading, ...rest } = useGetAlbums(pageUrl);
-  console.log("rest", rest);
 
   const columns = [
     { field: "albumTitle", headerName: "Title", width: 300 },
@@ -28,8 +27,6 @@ const Albums = () => {
     id: i,
     ...rest,
   }));
-
-  console.log("rows", rows);
 
   return (
     <div className={fullHeight}>
