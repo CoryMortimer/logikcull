@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useGetAlbums } from "./resources/album";
 import AddAlbum from "./AddAlbum";
+import UpdateAlbum from "./UpdateAlbum";
 import { DataGrid } from "ui/DataGrid";
 import { makeStyles } from "ui/styles";
 
@@ -20,6 +21,8 @@ const columns = [
 
 const Albums = () => {
   const [pageUrl, setPageUrl] = useState(firstPageOfAlbums);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [initialEditValues, setInitialEditValues] = useState();
   const { fullHeight } = useStyles();
   const { response, isLoading } = useGetAlbums(pageUrl);
 
@@ -41,6 +44,23 @@ const Albums = () => {
           rowCount={50}
           disableSelectionOnClick
           paginationMode="server"
+          onCellClick={(cellParams, b) => {
+            if (cellParams.colDef.field !== "artistName") {
+              setIsEditOpen(true);
+              const {
+                albumTitle,
+                artistName,
+                condition,
+                year,
+              } = cellParams.row;
+              setInitialEditValues({
+                albumTitle,
+                artistName,
+                condition,
+                year: `${year}`,
+              });
+            }
+          }}
           onPageChange={({ page }) => {
             if (page === 1) {
               setPageUrl(response.nextPage);
@@ -51,6 +71,15 @@ const Albums = () => {
         />
       </div>
       <AddAlbum page={pageUrl} />
+      <UpdateAlbum
+        page={pageUrl}
+        isDialogOpen={isEditOpen}
+        initialValues={initialEditValues}
+        handleClose={() => {
+          setIsEditOpen(false);
+          setInitialEditValues(null);
+        }}
+      />
     </>
   );
 };

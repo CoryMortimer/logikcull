@@ -23,6 +23,10 @@ export const useGetAlbums = (url) => {
   };
 };
 
+export const updateAlbum = (recordValues, url) => {
+  console.log("logic to edit", recordValues);
+};
+
 export const addNewAlbum = (
   { albumTitle, year, artistName, condition },
   url
