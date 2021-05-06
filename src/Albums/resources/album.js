@@ -23,6 +23,13 @@ export const useGetAlbums = (url) => {
   };
 };
 
+export const deleteAlbum = (url, id) => {
+  queryClient.setQueryData(["albums", url], (oldData) => {
+    oldData.data.results.splice(id, 1);
+    return oldData;
+  });
+};
+
 export const updateAlbum = (
   { albumTitle, year, artistName, condition },
   url,

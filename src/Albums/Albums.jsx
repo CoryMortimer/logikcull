@@ -16,8 +16,8 @@ const useStyles = makeStyles({
 const columns = [
   { field: "albumTitle", headerName: "Title", width: 300 },
   { field: "artistName", headerName: "Artist Name", width: 300 },
-  { field: "year", headerName: "Year", width: 300 },
-  { field: "condition", headerName: "Condition", width: 300 },
+  { field: "year", headerName: "Year", width: 100 },
+  { field: "condition", headerName: "Condition", width: 200 },
 ];
 
 const Albums = () => {

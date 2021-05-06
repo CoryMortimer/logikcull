@@ -28,6 +28,8 @@ const UpdateAlbum = ({ page, initialValues, isDialogOpen, handleClose }) => {
           open={isDialogOpen}
           handleClose={handleClose}
           onSubmit={handleSubmit}
+          initialValues={initialValues}
+          page={page}
         />
       )}
     />

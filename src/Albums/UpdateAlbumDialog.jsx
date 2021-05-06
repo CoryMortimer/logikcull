@@ -9,12 +9,19 @@ import Button from "ui/Button";
 import CloseIcon from "ui/icons/Close";
 import Typography from "ui/Typography";
 import Grid from "ui/Grid";
+import { deleteAlbum } from "./resources/album";
 
 const Transition = forwardRef((props, ref) => {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const UpdateAlbumDialog = ({ open, handleClose, onSubmit }) => {
+const UpdateAlbumDialog = ({
+  open,
+  handleClose,
+  onSubmit,
+  initialValues,
+  page,
+}) => {
   return (
     <Dialog fullScreen open={open} TransitionComponent={Transition}>
       <AppBar style={{ position: "relative" }}>
@@ -52,6 +59,15 @@ const UpdateAlbumDialog = ({ open, handleClose, onSubmit }) => {
         </Toolbar>
       </AppBar>
       <AlbumForm onSubmit={onSubmit} />
+      <Button
+        onClick={() => {
+          deleteAlbum(page, initialValues.id);
+          handleClose();
+        }}
+        color="secondary"
+      >
+        Delete
+      </Button>
     </Dialog>
   );
 };
