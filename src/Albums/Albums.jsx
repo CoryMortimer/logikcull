@@ -4,6 +4,7 @@ import AddAlbum from "./AddAlbum";
 import UpdateAlbum from "./UpdateAlbum";
 import { DataGrid } from "ui/DataGrid";
 import { makeStyles } from "ui/styles";
+import { UpdateArtist } from "Artists";
 
 const firstPageOfAlbums =
   "https://gist.githubusercontent.com/seanders/df38a92ffc4e8c56962e51b6e96e188f/raw/b032669142b7b57ede3496dffee5b7c16b8071e1/page1.json";
@@ -23,14 +24,19 @@ const Albums = () => {
   const [pageUrl, setPageUrl] = useState(firstPageOfAlbums);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [initialEditValues, setInitialEditValues] = useState();
+  const [initialEditArtistValues, setInitialEditArtistValues] = useState();
+  const [isEditArtistOpen, setIsEditArtistOpen] = useState(false);
   const { fullHeight } = useStyles();
   const { response, isLoading } = useGetAlbums(pageUrl);
 
-  const rows = response.results.map(({ artist: { name }, ...rest }, i) => ({
-    artistName: name,
-    id: i,
-    ...rest,
-  }));
+  const rows = response.results.map(
+    ({ artist: { name, id: artistId }, ...rest }, i) => ({
+      artistName: name,
+      artistId,
+      id: i,
+      ...rest,
+    })
+  );
 
   return (
     <>
@@ -44,7 +50,7 @@ const Albums = () => {
           rowCount={50}
           disableSelectionOnClick
           paginationMode="server"
-          onCellClick={(cellParams, b) => {
+          onCellClick={(cellParams) => {
             if (cellParams.colDef.field !== "artistName") {
               setIsEditOpen(true);
               const {
@@ -59,6 +65,10 @@ const Albums = () => {
                 condition,
                 year: `${year}`,
               });
+            } else {
+              const { artistName, artistId: id } = cellParams.row;
+              setIsEditArtistOpen(true);
+              setInitialEditArtistValues({ artistName, id });
             }
           }}
           onPageChange={({ page }) => {
@@ -78,6 +88,14 @@ const Albums = () => {
         handleClose={() => {
           setIsEditOpen(false);
           setInitialEditValues(null);
+        }}
+      />
+      <UpdateArtist
+        initialValues={initialEditArtistValues}
+        isDialogOpen={isEditArtistOpen}
+        handleClose={() => {
+          setIsEditArtistOpen(false);
+          setInitialEditArtistValues(null);
         }}
       />
     </>
