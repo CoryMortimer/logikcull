@@ -54,12 +54,14 @@ const Albums = () => {
             if (cellParams.colDef.field !== "artistName") {
               setIsEditOpen(true);
               const {
+                id,
                 albumTitle,
                 artistName,
                 condition,
                 year,
               } = cellParams.row;
               setInitialEditValues({
+                id,
                 albumTitle,
                 artistName,
                 condition,

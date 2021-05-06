@@ -23,8 +23,20 @@ export const useGetAlbums = (url) => {
   };
 };
 
-export const updateAlbum = (recordValues, url) => {
-  console.log("logic to edit", recordValues);
+export const updateAlbum = (
+  { albumTitle, year, artistName, condition },
+  url,
+  id
+) => {
+  queryClient.setQueryData(["albums", url], (oldData) => {
+    oldData.data.results[id] = {
+      year: +year,
+      album_title: albumTitle,
+      condition,
+      artist: { name: artistName, id: oldData.data.results[id].id },
+    };
+    return oldData;
+  });
 };
 
 export const addNewAlbum = (

@@ -3,8 +3,8 @@ import { Form } from "react-final-form";
 import { AlbumValidation, updateAlbum } from "./resources/album";
 
 const UpdateAlbum = ({ page, initialValues, isDialogOpen, handleClose }) => {
-  const onSubmit = (values, { restart }, callback) => {
-    updateAlbum(values, page);
+  const onSubmit = ({ id, ...values }, { restart }, callback) => {
+    updateAlbum(values, page, id);
     handleClose();
     restart();
     callback();
