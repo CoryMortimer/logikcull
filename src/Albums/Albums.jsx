@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useGetAlbums } from "./resources/album";
+import AddAlbum from "./AddAlbum";
 import { DataGrid } from "ui/DataGrid";
 import { makeStyles } from "ui/styles";
 
@@ -10,17 +11,17 @@ const useStyles = makeStyles({
   fullHeight: { height: "100vh" },
 });
 
+const columns = [
+  { field: "albumTitle", headerName: "Title", width: 300 },
+  { field: "artistName", headerName: "Artist Name", width: 300 },
+  { field: "year", headerName: "Year", width: 300 },
+  { field: "condition", headerName: "Condition", width: 300 },
+];
+
 const Albums = () => {
   const [pageUrl, setPageUrl] = useState(firstPageOfAlbums);
   const { fullHeight } = useStyles();
-  const { response, isLoading, ...rest } = useGetAlbums(pageUrl);
-
-  const columns = [
-    { field: "albumTitle", headerName: "Title", width: 300 },
-    { field: "artistName", headerName: "Artist Name", width: 300 },
-    { field: "year", headerName: "Year", width: 300 },
-    { field: "condition", headerName: "Condition", width: 300 },
-  ];
+  const { response, isLoading } = useGetAlbums(pageUrl);
 
   const rows = response.results.map(({ artist: { name }, ...rest }, i) => ({
     artistName: name,
@@ -29,25 +30,28 @@ const Albums = () => {
   }));
 
   return (
-    <div className={fullHeight}>
-      <DataGrid
-        loading={isLoading}
-        rows={rows}
-        pageSize={rows.length}
-        rowsPerPageOptions={[rows.length]}
-        columns={columns}
-        rowCount={50}
-        disableSelectionOnClick
-        paginationMode="server"
-        onPageChange={({ page }) => {
-          if (page === 1) {
-            setPageUrl(response.nextPage);
-          } else {
-            setPageUrl(firstPageOfAlbums);
-          }
-        }}
-      />
-    </div>
+    <>
+      <div className={fullHeight}>
+        <DataGrid
+          loading={isLoading}
+          rows={rows}
+          pageSize={rows.length}
+          rowsPerPageOptions={[rows.length]}
+          columns={columns}
+          rowCount={50}
+          disableSelectionOnClick
+          paginationMode="server"
+          onPageChange={({ page }) => {
+            if (page === 1) {
+              setPageUrl(response.nextPage);
+            } else {
+              setPageUrl(firstPageOfAlbums);
+            }
+          }}
+        />
+      </div>
+      <AddAlbum page={pageUrl} />
+    </>
   );
 };
 

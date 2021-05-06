@@ -1,7 +1,7 @@
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 export { default } from "axios";
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: Infinity,
