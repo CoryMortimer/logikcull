@@ -22,3 +22,4 @@ In the project directory, run:
 - When updating an artist, all artists need to be loaded by paginating to both pages in order for artists to be updated across pages.
 - Ideally, there would be a confirmation dialog before deletion but I ran out of time.
 - The user experience could be improved as to be more obvious as to how to update albums and artists.
+- Condition would ideally be formatted in a nicer way. Perhaps a color and formatted text could be displayed for each unique condition.
